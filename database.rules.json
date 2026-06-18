@@ -1,0 +1,15 @@
+{
+  "rules": {
+    ".read": "true",
+    ".write": "true",
+    "students": {
+      ".indexOn": "loginId"
+    },
+    "admin": {
+      ".indexOn": "loginId"
+    },
+    "users": {
+      ".indexOn": "loginId"
+    }
+  }
+}

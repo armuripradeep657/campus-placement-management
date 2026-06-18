@@ -1,0 +1,6 @@
+{
+  "name": "SIMATS Campus Placement Management System",
+  "description": "Campus Placement Management System (CPMS) for Saveetha Engineering College, featuring placement workflows, student and company management, resume matching, automated allocation, and live analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

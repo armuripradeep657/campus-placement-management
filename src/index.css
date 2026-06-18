@@ -1,0 +1,213 @@
+@import "tailwindcss";
+
+@theme {
+  --color-indigo-50: #f0fdfa;
+  --color-indigo-100: #ccfbf1;
+  --color-indigo-200: #99f6e4;
+  --color-indigo-300: #5eead4;
+  --color-indigo-400: #2dd4bf;
+  --color-indigo-500: #0ea5e9;
+  --color-indigo-550: #0284c7;
+  --color-indigo-600: #0d9488;
+  --color-indigo-650: #0f766e;
+  --color-indigo-700: #0f766e;
+  --color-indigo-750: #115e59;
+  --color-indigo-800: #0f172a;
+  --color-indigo-805: #090d16;
+  --color-indigo-900: #0f172a;
+  --color-indigo-950: #090d16;
+  --color-indigo-955: #05070a;
+
+  --color-yellow-100: #ecfdf5;
+  --color-yellow-250: #a7f3d0;
+  --color-yellow-300: #5eead4;
+  --color-yellow-400: #2dd4bf;
+  --color-yellow-405: #14b8a6;
+  --color-yellow-500: #0d9488;
+  --color-yellow-850: #115e59;
+}
+
+@layer utilities {
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes bounceSubtle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-bounce-subtle {
+  animation: bounceSubtle 3s ease-in-out infinite;
+}
+
+/* Custom subtle scrollbar styling */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 20px;
+}
+
+/* --- Dark Mode Semantic Stylesheets Overrides --- */
+/* Smooth theme-switching transitions for backgrounds, borders, text, and vector graphics */
+body,
+main,
+header,
+footer,
+aside,
+table,
+tr,
+th,
+td,
+input,
+select,
+textarea,
+button,
+div,
+p,
+span,
+h1,
+h2,
+h3,
+h4,
+svg {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark body {
+  background-color: #05070a;
+  color: #f1f5f9;
+}
+
+.dark #cpms_root_layout,
+.dark #cpms_loading_mask {
+  background-color: #05070a !important;
+  color: #e2e8f0;
+}
+
+.dark #desktop_header, 
+.dark #app_footer {
+  background-color: #090d16 !important;
+  border-color: #1e293b !important;
+  color: #f1f5f9;
+}
+
+.dark #desktop_header h1,
+.dark #desktop_header p,
+.dark #desktop_header span {
+  color: #f1f5f9;
+}
+
+.dark #desktop_header span {
+  color: #94a3b8;
+}
+
+.dark #mobile_header {
+  background-color: #090d16 !important;
+  border-bottom: 1px solid #1e293b;
+}
+
+.dark .bg-slate-50 {
+  background-color: #05070a !important;
+}
+
+.dark .bg-white {
+  background-color: #090d16 !important;
+  color: #f1f5f9;
+}
+
+.dark .text-slate-900 {
+  color: #f8fafc !important;
+}
+
+.dark .text-slate-800 {
+  color: #e2e8f0 !important;
+}
+
+.dark .text-slate-705,
+.dark .text-slate-700 {
+  color: #cbd5e1 !important;
+}
+
+.dark .text-slate-600,
+.dark .text-slate-550,
+.dark .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+.dark .text-slate-450,
+.dark .text-slate-400 {
+  color: #64748b !important;
+}
+
+.dark .border-slate-200,
+.dark .border-slate-100,
+.dark .border-slate-200\/80,
+.dark .border-slate-250 {
+  border-color: #1e293b !important;
+}
+
+.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+.dark .divide-y > * {
+  border-color: #1e293b !important;
+}
+
+/* Forms & Inputs in Admin Pages under Dark Theme */
+.dark input[type="text"],
+.dark input[type="email"],
+.dark input[type="number"],
+.dark input[type="password"],
+.dark select,
+.dark textarea {
+  background-color: #0f172a !important;
+  border-color: #1e293b !important;
+  color: #f8fafc !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #475569 !important;
+}
+
+/* Dialogs/Cards hover overrides */
+.dark .hover\:bg-slate-50\/50:hover,
+.dark .hover\:bg-slate-55:hover,
+.dark .hover\:bg-slate-50:hover,
+.dark .hover\:bg-slate-100:hover,
+.dark .hover\:bg-slate-100\/50:hover {
+  background-color: #111827 !important;
+}
+
+/* Standard charts readability backgrounds */
+.dark .recharts-tooltip-wrapper .bg-white {
+  background-color: #0f172a !important;
+  border-color: #1e293b !important;
+}
+
+.dark .bg-indigo-50 {
+  background-color: rgba(13, 148, 136, 0.1) !important;
+  color: #2dd4bf !important;
+}
+
+.dark .text-indigo-600 {
+  color: #2dd4bf !important;
+}
+
+.dark .bg-yellow-50 {
+  background-color: rgba(20, 184, 166, 0.1) !important;
+  color: #14b8a6 !important;
+}
+
+
