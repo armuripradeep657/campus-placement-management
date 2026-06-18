@@ -2,6 +2,11 @@
 
 React + Express web application for SIMATS campus placement workflows: student management, company registration, resume matching, placement allocation, analytics, student portal alerts, and audit logs.
 
+## Deployment
+
+Vercel:
+`https://campus-placement-management.vercel.app`
+
 ## Run Locally
 
 **Prerequisite:** Node.js
