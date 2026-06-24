@@ -5,7 +5,7 @@ React + Express web application for SIMATS campus placement workflows: student m
 ## Deployment
 
 Vercel:
-`https://campus-placement-management.vercel.app`
+`https://simats-campus-placement-system.vercel.app`
 
 ## Run Locally
 
