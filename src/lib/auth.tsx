@@ -230,48 +230,65 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     try {
-      console.log("Verifying login credentials against API database for ID:", cleanId);
+      console.log("🔍 Verifying login credentials against API database for ID:", cleanId);
       
       let databaseRecord: any = null;
       let foundRole: UserRole = null;
 
       // 1. First check if they match any active admin via Express endpoint
       try {
-        const adminResponse = await fetch(`/api/admins/${cleanId}`);
+        console.log("📍 Attempting admin lookup at /api/admins/" + cleanId);
+        const adminResponse = await fetch(`/api/admins/${cleanId}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        console.log("✅ Admin endpoint response:", adminResponse.status);
+        
         if (adminResponse.ok) {
           const admin = await adminResponse.json();
+          console.log("👤 Admin found:", admin.loginId);
           databaseRecord = admin;
           foundRole = "admin";
         }
       } catch (err) {
-        console.error("Local API admin verification error during login lookup:", err);
+        console.error("❌ Admin lookup failed:", err);
       }
 
       // 2. If not admin, check if they match any active student via Express endpoint
       if (!databaseRecord) {
         try {
-          const response = await fetch(`/api/students/${cleanId}`);
+          console.log("📍 Attempting student lookup at /api/students/" + cleanId);
+          const response = await fetch(`/api/students/${cleanId}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+          });
+          console.log("✅ Student endpoint response:", response.status);
+          
           if (response.ok) {
             const student = await response.json();
+            console.log("👤 Student found:", student.id);
             databaseRecord = student;
             foundRole = "student";
+          } else {
+            console.warn("⚠️ Student not found, status:", response.status);
           }
         } catch (err) {
-          console.error("Local API student verification error during login lookup:", err);
+          console.error("❌ Student lookup failed:", err);
         }
       }
 
       if (!databaseRecord) {
+        console.error("❌ No user record found for ID:", cleanId);
         return { success: false, error: "Incorrect Login ID or password." };
       }
 
-      // Check if the password matches (supporting both 'password' and 'Password' case-insensitively)
-      // FIXED: Compare passwords exactly (case-sensitive) instead of lowercasing both
+      // Check if the password matches (exact case-sensitive comparison)
       const expectedPass = databaseRecord.password !== undefined ? databaseRecord.password : databaseRecord.Password;
       if (expectedPass !== undefined && expectedPass !== null && String(expectedPass).trim() !== "") {
+        console.log("🔐 Password validation - Stored:", String(expectedPass).trim(), "Provided:", cleanPass);
         // Exact string match comparison (case-sensitive)
         if (cleanPass !== String(expectedPass).trim()) {
-          console.warn(`Password mismatch for ${cleanId}. Expected: "${String(expectedPass).trim()}", Got: "${cleanPass}"`);
+          console.warn(`❌ Password mismatch for ${cleanId}`);
           return { success: false, error: "Incorrect Login ID or password." };
         }
       } else {
@@ -288,10 +305,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
           if (databaseRecord.email) {
             await signInWithEmailAndPassword(auth, databaseRecord.email, cleanPass);
-            console.log("Successfully validated parallel Firebase Auth token session.");
+            console.log("✅ Firebase Auth validation successful");
           }
         } catch (authErr) {
-          console.warn("Firebase Auth credentials mismatch/not found, bypassing with DB credentials.", authErr);
+          console.warn("⚠️ Firebase Auth credentials mismatch, bypassing with DB credentials.", authErr);
         }
       }
 
@@ -304,6 +321,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         loginId: cleanId
       };
 
+      console.log("✅ Login successful for:", loggedInUser.loginId, "Role:", loggedInUser.role);
+
       localStorage.setItem("cpms_role", foundRole!);
       if (loggedInUser.studentId) localStorage.setItem("cpms_student_id", loggedInUser.studentId);
       if (loggedInUser.name) localStorage.setItem("cpms_student_name", loggedInUser.name);
@@ -314,7 +333,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return { success: true };
 
     } catch (err: any) {
-      console.error("Critical authentication runtime err:", err);
+      console.error("❌ Critical authentication runtime error:", err);
       return { success: false, error: err.message || "An unexpected failure occurred during credentials verification." };
     }
   };
@@ -337,7 +356,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     try {
-      console.log("Verifying password reset destination email via API database for ID:", cleanId);
+      console.log("🔍 Verifying password reset destination email via API database for ID:", cleanId);
       let emailAddress = "";
 
       // 1. Fetch from admin endpoint
@@ -374,7 +393,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return { success: true };
       }
     } catch (err: any) {
-      console.error("Password reset failure:", err);
+      console.error("❌ Password reset failure:", err);
       return { success: false, error: err.message || "Failed to trigger secure SMTP password reset email." };
     }
   };
