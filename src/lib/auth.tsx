@@ -265,10 +265,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return { success: false, error: "Incorrect Login ID or password." };
       }
 
-      // Check if the password matches (supporting both 'password' and 'Password' case-insensitively, or falling back to Name if no password is set)
+      // Check if the password matches (supporting both 'password' and 'Password' case-insensitively)
+      // FIXED: Compare passwords exactly (case-sensitive) instead of lowercasing both
       const expectedPass = databaseRecord.password !== undefined ? databaseRecord.password : databaseRecord.Password;
       if (expectedPass !== undefined && expectedPass !== null && String(expectedPass).trim() !== "") {
-        if (cleanPass.toLowerCase() !== String(expectedPass).trim().toLowerCase()) {
+        // Exact string match comparison (case-sensitive)
+        if (cleanPass !== String(expectedPass).trim()) {
+          console.warn(`Password mismatch for ${cleanId}. Expected: "${String(expectedPass).trim()}", Got: "${cleanPass}"`);
           return { success: false, error: "Incorrect Login ID or password." };
         }
       } else {
