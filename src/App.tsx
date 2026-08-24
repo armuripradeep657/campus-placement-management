@@ -13,6 +13,7 @@ import SecurityLogs from "./pages/SecurityLogs";
 import { ThemeProvider } from "./lib/theme";
 import { motion, AnimatePresence } from "motion/react";
 import { Clock, AlertTriangle } from "lucide-react";
+import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 
 export function CPMSAppRouter() {
   const { user, isLoading, secondsLeft, extendSession, logout } = useAuth();
@@ -130,6 +131,7 @@ export default function App() {
     <AuthProvider>
       <ThemeProvider>
         <CPMSAppRouter />
+        <VercelAnalytics />
       </ThemeProvider>
     </AuthProvider>
   );
